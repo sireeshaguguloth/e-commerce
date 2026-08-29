@@ -1,0 +1,42 @@
+# Netlify configuration for the E-Mart storefront.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ---------------------------------------------------------------------------
+# API proxy - the production equivalent of the Vite dev proxy.
+#
+# This keeps the browser on a single origin (myecartapp.netlify.app), which is
+# what makes the auth work in production:
+#   * the httpOnly refresh cookie stays FIRST-party, so Safari/Brave and Chrome's
+#     third-party cookie phase-out do not silently drop it
+#   * SameSite=Lax keeps protecting /refresh, so no CSRF token layer is needed
+#   * no CORS preflight at all, since nothing is cross-origin
+#
+# Calling the backend directly from the browser instead would make that cookie
+# third-party, and the session would break in exactly the browsers that block them.
+#
+# TODO: replace the host below with your deployed backend URL. Netlify cannot host
+# the Spring Boot app itself - see backend/README.md "Deploying".
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/api/*"
+  to = "https://REPLACE-WITH-YOUR-BACKEND-HOST/api/:splat"
+  status = 200
+  force = true
+
+# ---------------------------------------------------------------------------
+# SPA fallback. Must stay LAST: Netlify applies the first matching rule, so this
+# would swallow /api/* if it came first.
+#
+# Without this, a hard refresh or a direct link to /mobiles, /cart or /login
+# returns Netlify's 404 page, because only "/" exists as a real file.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

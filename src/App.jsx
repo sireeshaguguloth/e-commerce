@@ -28,6 +28,8 @@ import TvSingle from './singles/TvSingle.jsx';
 import SpeakerSingle from './singles/SpeakerSingle.jsx';
 import SearchPage from './stores/pages/SearchPage.jsx';
 import UserCart from './stores/UserCart.jsx';
+import Login from './stores/pages/Login.jsx';
+import Signup from './stores/pages/Signup.jsx';
 const App = () =>{
   return(
     <div>
@@ -62,6 +64,10 @@ const App = () =>{
         
         <Route path='/search' element={<SearchPage />}></Route>
         <Route path='/cart' element={<UserCart />}></Route>
+
+        {/* Auth Routes */}
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/signup' element={<Signup />}></Route>
       </Routes>
     </div>
   )
