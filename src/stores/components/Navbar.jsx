@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const categories = [
   { name: 'All', path: '/', image: '/assets/banner1.jpg' },
@@ -20,6 +21,7 @@ const categories = [
 
 const Navbar = () => {
   const { totalQuantity } = useCart();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
@@ -28,6 +30,11 @@ const Navbar = () => {
   useEffect(() => {
     setQuery(searchParams.get('q') || '');
   }, [searchParams]);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
 
   const runSearch = (event) => {
     event.preventDefault();
@@ -57,7 +64,22 @@ const Navbar = () => {
         </form>
 
         <div className="user">
-          <div className="user-detail">SignIn / SignUp</div>
+          {/* Held blank while the silent refresh settles, so a signed-in user
+              never sees "SignIn / SignUp" flash before their name appears. */}
+          {isLoading ? (
+            <div className="auth-slot" aria-hidden="true" />
+          ) : isAuthenticated ? (
+            <div className="auth-slot">
+              <span className="auth-greeting">Hi, {user.name.split(' ')[0]}</span>
+              <button type="button" className="auth-logout" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="auth-slot auth-signin">
+              SignIn / SignUp
+            </Link>
+          )}
           <Link to="/cart" className="cart-link">
             <div className="cart">
               Cart<span>{totalQuantity}</span>
