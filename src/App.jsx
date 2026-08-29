@@ -26,6 +26,7 @@ import WomanSingle from './singles/WomanSingle.jsx';
 import KitchenSingle from './singles/KitchenSingle.jsx';
 import TvSingle from './singles/TvSingle.jsx';
 import SpeakerSingle from './singles/SpeakerSingle.jsx';
+import SearchPage from './stores/pages/SearchPage.jsx';
 import UserCart from './stores/UserCart.jsx';
 const App = () =>{
   return(
@@ -59,6 +60,7 @@ const App = () =>{
         <Route path='/tv/:id' element={<TvSingle />}></Route>
         <Route path='/speakers/:id' element={<SpeakerSingle />}></Route>
         
+        <Route path='/search' element={<SearchPage />}></Route>
         <Route path='/cart' element={<UserCart />}></Route>
       </Routes>
     </div>

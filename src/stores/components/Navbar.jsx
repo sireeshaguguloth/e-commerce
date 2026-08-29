@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
 const categories = [
@@ -20,6 +20,21 @@ const categories = [
 
 const Navbar = () => {
   const { totalQuantity } = useCart();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') || '');
+
+  // keep the box in sync when the url changes (back button, new search)
+  useEffect(() => {
+    setQuery(searchParams.get('q') || '');
+  }, [searchParams]);
+
+  const runSearch = (event) => {
+    event.preventDefault();
+    const term = query.trim();
+    if (term === '') return;
+    navigate(`/search?q=${encodeURIComponent(term)}`);
+  };
 
   return (
     <header className="navbar-section">
@@ -28,9 +43,18 @@ const Navbar = () => {
           <h2>E-Mart</h2>
         </Link>
 
-        <div className="search">
-          <input type="text" placeholder="Search for products..." />
-        </div>
+        <form className="search" onSubmit={runSearch} role="search">
+          <input
+            type="text"
+            placeholder="Search for products..."
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            aria-label="Search products"
+          />
+          <button type="submit" className="search-btn">
+            Search
+          </button>
+        </form>
 
         <div className="user">
           <div className="user-detail">SignIn / SignUp</div>

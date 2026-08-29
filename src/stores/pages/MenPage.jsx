@@ -1,29 +1,18 @@
 import React from 'react'
 import { menData } from '../data/men'
-import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import ProductBrowser from '../components/ProductBrowser'
+
 const MenPage = () => {
-  const navigate = useNavigate()
   return (
-     <>
-    <Navbar />
-    <div className="page-container">
-    <div className='pageSection'>{menData.map((item, idx)=>{
-    return(
-        <div key={idx} className='pro-input' onClick={() => navigate(`/men/${item.id}`)}
-          style={{ cursor: 'pointer' }}>
-            <div className='pageImg'>
-                <img src={item.image } alt={item.model}/>
-            </div>
-            <div className="proModel">
-              {item.brand},{item.model}
-            </div>
-        </div>
-    )
-    })}
-    
-    </div>
-    </div>
+    <>
+      <Navbar />
+      <ProductBrowser
+        title="Men"
+        items={menData}
+        linkFor={(item) => `/men/${item.id}`}
+        brandLabel="Brand"
+      />
     </>
   )
 }
