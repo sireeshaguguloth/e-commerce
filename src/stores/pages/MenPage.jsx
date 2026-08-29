@@ -8,7 +8,7 @@ const MenPage = () => {
     <>
       <Navbar />
       <ProductBrowser
-        title="Men"
+        title="Mens"
         items={menData}
         linkFor={(item) => `/men/${item.id}`}
         brandLabel="Brand"
