@@ -20,12 +20,13 @@
 # Calling the backend directly from the browser instead would make that cookie
 # third-party, and the session would break in exactly the browsers that block them.
 #
-# TODO: replace the host below with your deployed backend URL. Netlify cannot host
-# the Spring Boot app itself - see backend/README.md "Deploying".
+# The host below is the Render service from render.yaml (service name "emart-auth").
+# VERIFY it against the Render dashboard: if the name was taken, Render appends a
+# suffix and this URL 404s. Backend repo: github.com/sireeshaguguloth/e-commerce-backend
 # ---------------------------------------------------------------------------
 [[redirects]]
   from = "/api/*"
-  to = "https://REPLACE-WITH-YOUR-BACKEND-HOST/api/:splat"
+  to = "https://emart-auth.onrender.com/api/:splat"
   status = 200
   force = true
 
